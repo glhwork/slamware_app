@@ -31,70 +31,70 @@ using namespace rpos::system::types;
 using namespace rpos::core;
 
 class slamwareAPP {
-public:
-    slamwareAPP();
-    slamwareAPP(std::string ip);
-    ~slamwareAPP();
+ public:
+  slamwareAPP();
+  slamwareAPP(std::string ip);
+  ~slamwareAPP();
 
-    void init();
-    bool connectSlamware();
-    void startSlamwareWork();
+  void init();
+  bool connectSlamware();
+  void startSlamwareWork();
 
-    void publishRobotPose(double publish_period);
-    void publishScan(double publish_period);
-    void publishMap(double publish_period);
-    void publishPlanPath(float publish_period);
-    void robotControlCallback (const geometry_msgs::TwistConstPtr &vel);
-    void moveToGoalCallback (const geometry_msgs::PoseStamped::ConstPtr& goal);
+  void publishRobotPose(double publish_period);
+  void publishScan(double publish_period);
+  void publishMap(double publish_period);
+  void publishPlanPath(float publish_period);
+  void robotControlCallback (const geometry_msgs::TwistConstPtr &vel);
+  void moveToGoalCallback (const geometry_msgs::PoseStamped::ConstPtr& goal);
 
-    ros::Publisher scan_pub_;
-    ros::Publisher robot_pose_pub_;
-    ros::Publisher gridmap_pub_;
-    ros::Publisher gridmap_info_pub_;
-    ros::Publisher global_plan_pub_;
+  ros::Publisher scan_pub_;
+  ros::Publisher robot_pose_pub_;
+  ros::Publisher gridmap_pub_;
+  ros::Publisher gridmap_info_pub_;
+  ros::Publisher global_plan_pub_;
 
-    ros::Subscriber robot_vel_sub_;
-    ros::Subscriber goal_sub_;
+  ros::Subscriber robot_vel_sub_;
+  ros::Subscriber goal_sub_;
 
-private:
-    void loopThreads();
+ private:
+  void loopThreads();
 
-private:
-    ros::NodeHandle nh_;
-    SlamwareCorePlatform SDP_;
+ private:
+  ros::NodeHandle nh_;
+  SlamwareCorePlatform SDP_;
 
-    std::string ip_addres_;
-    bool angle_compensate_;
-    bool fixed_odom_map_tf_;
-    float robot_pose_pub_period_;
-    float scan_pub_period_;
-    float map_pub_period_;
-    float path_pub_period_;
+  std::string ip_addres_;
+  bool angle_compensate_;
+  bool fixed_odom_map_tf_;
+  float robot_pose_pub_period_;
+  float scan_pub_period_;
+  float map_pub_period_;
+  float path_pub_period_;
 
-    float map_size_down_left_x_;
-    float map_size_down_left_y_;
-    float map_size_width_;
-    float map_size_height_;
+  float map_size_down_left_x_;
+  float map_size_down_left_y_;
+  float map_size_width_;
+  float map_size_height_;
 
-    tf::TransformBroadcaster tfB_;
+  tf::TransformBroadcaster tfB_;
 
-    boost::thread* robot_pose_pub_thread_;
-    boost::thread* scan_pub_thread_;
-    boost::thread* map_pub_thread_;
-    boost::thread* transform_thread_;
-    boost::thread* plan_path_pub_thread_;
+  boost::thread* robot_pose_pub_thread_;
+  boost::thread* scan_pub_thread_;
+  boost::thread* map_pub_thread_;
+  boost::thread* transform_thread_;
+  boost::thread* plan_path_pub_thread_;
 
-    std::string robot_frame_;
-    std::string laser_frame_;
-    std::string map_frame_;
-    std::string odom_frame_;
+  std::string robot_frame_;
+  std::string laser_frame_;
+  std::string map_frame_;
+  std::string odom_frame_;
 
-    std::string vel_control_topic_;
-    std::string goal_topic_;
-    std::string scan_topic_;
-    std::string odom_topic_;
-    std::string map_topic_;
-    std::string map_info_topic_;
-    std::string path_topic_;
+  std::string vel_control_topic_;
+  std::string goal_topic_;
+  std::string scan_topic_;
+  std::string odom_topic_;
+  std::string map_topic_;
+  std::string map_info_topic_;
+  std::string path_topic_;
 };
 

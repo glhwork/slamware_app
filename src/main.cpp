@@ -17,24 +17,26 @@ using namespace rpos::features;
 using namespace rpos::features::location_provider;
 using namespace std;
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
+
   ros::init(argc, argv, "slamwareAPP");
   const int reconnect_count_threshold = 10;
 
   slamwareAPP slamwareAPPNode;
 
   int reconnect_count_timer = 0;
-  while(!slamwareAPPNode.connectSlamware() && reconnect_count_timer++ < reconnect_count_threshold)
-  {
-      std::cout<<" ===> reconnect : "<<reconnect_count_timer<<std::endl;
+  
+  while(!slamwareAPPNode.connectSlamware() && 
+        reconnect_count_timer++ < reconnect_count_threshold) {
+    std::cout << " ===> reconnect : " << reconnect_count_timer << std::endl;
   }
-  if(reconnect_count_timer >= reconnect_count_threshold)
-  {
-      std::cout<<" ===> reconnect error, cannot connect the slamware ! "<<std::endl;
-      return(0);
+  
+  if (reconnect_count_timer >= reconnect_count_threshold) {
+    std::cout << " ===> reconnect error, cannot connect the slamware ! " << std::endl;
+    return(0);
   }
-  std::cout<<" ===> slamwareAPP start work! "<<std::endl;
+  
+  std::cout << " ===> slamwareAPP start work! " << std::endl;
   slamwareAPPNode.startSlamwareWork();
 
   ros::spin();

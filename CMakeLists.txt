@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(slamwareAPP)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(SDK_DIRS "${PROJECT_SOURCE_DIR}/SDK/slamware_sdk_linux-x86_64-gcc4.8")
+set(SDK_DIRS "${PROJECT_SOURCE_DIR}/SDK/slamware_sdk_linux-x86_64-gcc5.4")
 
 set(SDK_DEBUG true)
 if(SDK_DEBUG)
@@ -14,7 +14,18 @@ else()
 endif()
 
 find_package(Threads)
-find_package(catkin REQUIRED COMPONENTS   roscpp   rospy   sensor_msgs   std_msgs   tf)
+find_package(catkin REQUIRED COMPONENTS   
+  roscpp   
+  rospy   
+  sensor_msgs   
+  std_msgs   
+  tf
+)
+
+find_package(Boost REQUIRED COMPONENTS
+  filesystem
+)
+include_directories(${Boost_INCLUDE_DIRS})
 
 catkin_package()
 
@@ -47,5 +58,6 @@ target_link_libraries(slamwareNode
         libboost_system.a
         libboost_thread.a
         pthread
+        ${Boost_LIBRARIES}
 )
 

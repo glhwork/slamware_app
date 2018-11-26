@@ -4,49 +4,64 @@
 */
 #include  "slamwareAPP.h"
 
-slamwareAPP::slamwareAPP(std::string ip):ip_addres_(ip),
-    nh_("~"), robot_pose_pub_thread_(NULL),scan_pub_thread_(NULL),map_pub_thread_(NULL),plan_path_pub_thread_(NULL)
-{
-    init();
+// Constructor
+slamwareAPP::slamwareAPP(std::string ip)
+  : ip_addres_(ip),
+    nh_("~"), 
+    robot_pose_pub_thread_(NULL),
+    scan_pub_thread_(NULL),
+    map_pub_thread_(NULL),
+    plan_path_pub_thread_(NULL) {
+  
+  init();
+
 }
 
-slamwareAPP::slamwareAPP():ip_addres_( "192.168.11.1"),
-    nh_("~"), robot_pose_pub_thread_(NULL),scan_pub_thread_(NULL),map_pub_thread_(NULL),plan_path_pub_thread_(NULL)
-{
-    init();
+// Default Constructor
+slamwareAPP::slamwareAPP()
+  : ip_addres_("192.168.11.1"),
+    nh_("~"), 
+    robot_pose_pub_thread_(NULL),
+    scan_pub_thread_(NULL),
+    map_pub_thread_(NULL),
+    plan_path_pub_thread_(NULL) {
+  
+  init();
+    
 }
 
-slamwareAPP::~slamwareAPP()
-{
-    if(robot_pose_pub_thread_){
-        delete robot_pose_pub_thread_;
-    }
+slamwareAPP::~slamwareAPP() {
 
-    if(scan_pub_thread_){
-        delete scan_pub_thread_;
-    }
+  if (robot_pose_pub_thread_) {
+    delete robot_pose_pub_thread_;
+  }
 
-    if(map_pub_thread_){
-        delete map_pub_thread_;
-    }
+  if (scan_pub_thread_) {
+    delete scan_pub_thread_;
+  }
 
-    if(transform_thread_)
-    {
-        delete transform_thread_;
-    }
-    if(plan_path_pub_thread_)
-    {
-        delete plan_path_pub_thread_;
-    }
+  if (map_pub_thread_) {
+    delete map_pub_thread_;
+  }
+
+  if (transform_thread_) {
+    delete transform_thread_;
+  }
+    
+  if (plan_path_pub_thread_) {
+    delete plan_path_pub_thread_;
+  }
+  
 }
 
-void slamwareAPP::init()
-{
+void slamwareAPP::init() {
     //ip
+    std::cout << nh_.getParam("ip_addres", ip_addres_) << std::endl;
     if(!nh_.getParam("ip_addres", ip_addres_))
     {
         ip_addres_ = "192.168.11.1";
     }
+    
 
     //laser compensate
     if(!nh_.getParam("angle_compensate", angle_compensate_))
@@ -116,6 +131,7 @@ void slamwareAPP::init()
 
 bool slamwareAPP::connectSlamware()
 {
+  std::cout << "the address i get before connection is : " << ip_addres_ << std::endl;
     try {
         SDP_ = SlamwareCorePlatform::connect(ip_addres_, 1445);
         std::cout <<" ===> SDK Version: " << SDP_.getSDKVersion() << std::endl;
